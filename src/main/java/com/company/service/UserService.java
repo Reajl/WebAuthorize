@@ -47,24 +47,25 @@ public class UserService implements UserDetailsService {
     }
     public boolean saveUser(User user) {
         User userFromDB = userRepository.findByUsername(user.getUsername());
-        if (userFromDB!=null){
+        if (userFromDB != null) {
             return false;
         }
-        user.setRoles(Collections.singleton(new Role(1L,"ROLE_USER")));
+        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
     }
 
-    public boolean deleteUser(Long userId){
-        if (userRepository.findById(userId).isPresent()){
-        userRepository.deleteById(userId);
-        return true;
+    public boolean deleteUser(Long userId) {
+        if (userRepository.findById(userId).isPresent()) {
+            userRepository.deleteById(userId);
+            return true;
         }
         return false;
     }
 
-    public List <User> usergtList (Long idMin) {
-        return em.createQuery("Select u from User u where u.id > :paramId",User.class).setParameter("paramId",idMin).getResultList();
+    //
+    public List<User> usergtList(Long idMin) {
+        return em.createQuery("Select u from User u ", User.class).getResultList();
     }
 }
